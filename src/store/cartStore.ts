@@ -14,6 +14,18 @@ type ProductState = {
   applyFilters: () => void;
 };
 
+type CartItem = Product & { qty: number };
+type CartState = {
+  items: CartItem[];
+  orders: CartItem[][];
+  addToCart: (product: Product) => void;
+  removeFromCart: (id: number) => void;
+  clearCart: () => void;
+  totalItems: number;
+  totalPrice: number;
+  checkout: () => void;
+};
+
 export const useProductStore = create<ProductState>((set, get) => ({
   allProducts: products,
   filteredProducts: products,
@@ -52,18 +64,6 @@ export const useProductStore = create<ProductState>((set, get) => ({
     set({ filteredProducts: filtered, currentPage: 1 });
   },
 }));
-
-type CartItem = Product & { qty: number };
-type CartState = {
-  items: CartItem[];
-  orders: CartItem[][];
-  addToCart: (product: Product) => void;
-  removeFromCart: (id: number) => void;
-  clearCart: () => void;
-  totalItems: number;
-  totalPrice: number;
-  checkout: () => void;
-};
 
 export const useCartStore = create<CartState>((set, get) => ({
   items: [],

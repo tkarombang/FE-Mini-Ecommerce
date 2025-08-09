@@ -5,7 +5,7 @@ import { useCartStore } from "@/store/cartStore";
 export default function Navbar() {
   const totalItems = useCartStore((state) => state.totalItems);
   return (
-    <nav className="bg-stone-700 border-b border-stone-400 shadow-sm">
+    <nav className="bg-teal-700 border-b border-stone-400 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-arrow items-center">
         <Link href="/" className="text-xl font-bold text-stone-300 uppercase p-3">
           mini-e-commerce

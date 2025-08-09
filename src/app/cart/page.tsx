@@ -32,7 +32,7 @@ export default function CartPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6 text-stone-700">Halaman Cart</h1>
+      <h1 className="text-2xl font-bold mb-6 text-teal-700">Halaman Cart</h1>
 
       {items.length === 0 ? (
         <p className="text-amber-500 text-center font-bold text-5xl">Silahkan Berbelanja</p>

@@ -17,7 +17,7 @@ export default function ProductListPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold">Daftar Produk</h1>
+      <h1 className="text-3xl font-bold text-teal-800">Daftar Produk</h1>
 
       <div className="flex flex-wrap gap-4 mb-6 justify-end">
         <select value={category} onChange={(e) => setCategory(e.target.value)} className="border-teal-600 border rounded px-2 py-2 cursor-pointer">

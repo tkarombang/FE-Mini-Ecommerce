@@ -7,7 +7,7 @@ export default function OrderPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">Daftar Pesanan</h1>
+      <h1 className="text-2xl font-bold mb-6 text-teal-800">Daftar Pesanan</h1>
 
       {orders.length === 0 ? (
         <p className="text-amber-500 text-center font-bold text-5xl">Belum Melakukan Pemesanan</p>
