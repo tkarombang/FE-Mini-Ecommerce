@@ -7,11 +7,13 @@ type ProductState = {
   category: string;
   priceSort: "asc" | "desc" | "";
   currentPage: number;
+  setPage: (page: number) => void;
   itemsPerPage: number;
   setCategory: (category: string) => void;
   setPriceSort: (sort: "asc" | "desc" | "") => void;
-  setPage: (page: number) => void;
   applyFilters: () => void;
+  // visibleCount: number;
+  // loadMore: () => void;
 };
 
 type CartItem = Product & { qty: number };
@@ -33,6 +35,7 @@ export const useProductStore = create<ProductState>((set, get) => ({
   priceSort: "",
   currentPage: 1,
   itemsPerPage: 4,
+  // visibleCount: 8,
 
   setCategory: (category) => {
     set({ category });
@@ -47,6 +50,12 @@ export const useProductStore = create<ProductState>((set, get) => ({
   setPage: (page) => {
     set({ currentPage: page });
   },
+
+  // loadMore: () => {
+  //   set((state) => ({
+  //     visibleCount: state.visibleCount + state.itemsPerPage,
+  //   }));
+  // },
 
   applyFilters: () => {
     let filtered = [...get().allProducts];
