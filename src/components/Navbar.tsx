@@ -1,7 +1,9 @@
 "use client";
 import Link from "next/link";
+import { useCartStore } from "@/store/cartStore";
 
 export default function Navbar() {
+  const totalItems = useCartStore((state) => state.totalItems);
   return (
     <nav className="bg-stone-700 border-b border-stone-400 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-arrow items-center">
@@ -16,8 +18,9 @@ export default function Navbar() {
           <Link href="/orders" className="texxt-stone-700 text-stone-50 hover:text-stone-400">
             List Order
           </Link>
-          <Link href="/checkout" className="texxt-stone-700 text-stone-50 hover:text-stone-400">
+          <Link href="/checkout" className="texxt-stone-700 text-stone-50 hover:text-stone-400 relative">
             Cart
+            {totalItems > 0 && <span className="absolute -top-2 -right-3 bg-rose-600 text-stone-50 text-xs px-2 py-0.5 rounded-full">{totalItems}</span>}
           </Link>
         </div>
       </div>
