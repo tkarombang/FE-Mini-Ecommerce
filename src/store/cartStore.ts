@@ -4,15 +4,18 @@ import type { Product } from "@/data/products";
 type CartItem = Product & { qty: number };
 type CartState = {
   items: CartItem[];
+  orders: CartItem[][];
   addToCart: (product: Product) => void;
   removeFromCart: (id: number) => void;
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
+  checkout: () => void;
 };
 
 export const useCartStore = create<CartState>((set, get) => ({
   items: [],
+  orders: [],
   addToCart: (product) => {
     const existingItem = get().items.find((item) => item.id === product.id);
     if (existingItem) {
@@ -33,6 +36,16 @@ export const useCartStore = create<CartState>((set, get) => ({
   clearCart: () => set({ items: [] }),
   totalItems: 0,
   totalPrice: 0,
+
+  checkout: () => {
+    set((state) => {
+      if (state.items.length === 0) return state;
+      return {
+        orders: [...state.orders, state.items],
+        items: [],
+      };
+    });
+  },
 }));
 
 useCartStore.subscribe((state) => {
