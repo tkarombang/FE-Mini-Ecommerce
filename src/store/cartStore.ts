@@ -1,5 +1,57 @@
 import { create } from "zustand";
-import type { Product } from "@/data/products";
+import { products, Product } from "@/data/products";
+
+type ProductState = {
+  allProducts: Product[];
+  filteredProducts: Product[];
+  category: string;
+  priceSort: "asc" | "desc" | "";
+  currentPage: number;
+  itemsPerPage: number;
+  setCategory: (category: string) => void;
+  setPriceSort: (sort: "asc" | "desc" | "") => void;
+  setPage: (page: number) => void;
+  applyFilters: () => void;
+};
+
+export const useProductStore = create<ProductState>((set, get) => ({
+  allProducts: products,
+  filteredProducts: products,
+  category: "",
+  priceSort: "",
+  currentPage: 1,
+  itemsPerPage: 4,
+
+  setCategory: (category) => {
+    set({ category });
+    get().applyFilters();
+  },
+
+  setPriceSort: (sort) => {
+    set({ priceSort: sort });
+    get().applyFilters();
+  },
+
+  setPage: (page) => {
+    set({ currentPage: page });
+  },
+
+  applyFilters: () => {
+    let filtered = [...get().allProducts];
+
+    if (get().category) {
+      filtered = filtered.filter((p) => p.kategori === get().category);
+    }
+
+    if (get().priceSort === "asc") {
+      filtered.sort((a, b) => a.price - b.price);
+    } else if (get().priceSort === "desc") {
+      filtered.sort((a, b) => b.price - a.price);
+    }
+
+    set({ filteredProducts: filtered, currentPage: 1 });
+  },
+}));
 
 type CartItem = Product & { qty: number };
 type CartState = {
