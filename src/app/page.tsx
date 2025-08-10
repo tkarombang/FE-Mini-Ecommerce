@@ -2,19 +2,16 @@
 
 import { useCartStore, useProductStore } from "@/store/cartStore";
 import ProductCard from "@/components/ProductCard";
-import { useCallback, useMemo, useState } from "react";
-import { Product, products } from "@/data/products";
+import { useCallback, useMemo } from "react";
+import { Product } from "@/data/products";
 import { debounce } from "lodash";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 
 export default function ProductListPage() {
-  const { currentPage, itemsPerPage, setPage } = useProductStore();
+  const { filteredProducts, category, priceSort, currentPage, itemsPerPage, setPage, setCategory, setPriceSort } = useProductStore();
   const addToCart = useCartStore((state) => state.addToCart);
-  const [priceSort, setPriceSort] = useState("");
-  const [category, setCategory] = useState("");
-
   const handleAddToCart = useCallback(
     (product: Product) => {
       addToCart(product);
@@ -22,23 +19,8 @@ export default function ProductListPage() {
     [addToCart],
   );
 
-  const filteredProducts = useMemo(() => {
-    let result = [...products];
-
-    if (category) {
-      result = result.filter((p) => p.kategori === category);
-    }
-
-    if (priceSort === "asc") {
-      result.sort((a, b) => a.price - b.price);
-    }
-    if (priceSort === "desc") {
-      result.sort((a, b) => b.price - a.price);
-    }
-    return result;
-  }, [priceSort, category]);
-
-  const handlePriceSort = useMemo(() => debounce((value: "asc" | "desc" | "") => setPriceSort(value), 300), [setPriceSort]);
+  const debounceSetCategory = useMemo(() => debounce((value: string) => setCategory(value), 300), [setCategory]);
+  const debouncePriceSort = useMemo(() => debounce((value: "asc" | "desc" | "") => setPriceSort(value), 300), [setPriceSort]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedProducts = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
@@ -49,14 +31,14 @@ export default function ProductListPage() {
       <h1 className="text-3xl font-bold text-teal-800">Daftar Produk</h1>
 
       <div className="flex flex-wrap gap-4 mb-6 justify-end">
-        <select value={category} onChange={(e) => setCategory(e.target.value)} className="border-teal-600 border rounded px-2 py-2 cursor-pointer">
+        <select value={category} onChange={(e) => debounceSetCategory(e.target.value)} className="border-teal-600 border rounded px-2 py-2 cursor-pointer">
           <option value="">Semua Kategori</option>
           <option value="Elektronik">Elektronik</option>
           <option value="Aksesoris Komputer">Aksesoris Komputer</option>
           <option value="Perangkat Wearable">Perangkat Wearable</option>
         </select>
 
-        <select value={priceSort} onChange={(e) => handlePriceSort(e.target.value as "asc" | "desc" | "")} className="border-teal-600 border rounded px-2 py-2 cursor-pointer">
+        <select value={priceSort} onChange={(e) => debouncePriceSort(e.target.value as "asc" | "desc" | "")} className="border-teal-600 border rounded px-2 py-2 cursor-pointer">
           <option value="">Urutkan Harga</option>
           <option value="asc">Harga Terendah</option>
           <option value="desc">Harga Tertinggi</option>
@@ -68,7 +50,7 @@ export default function ProductListPage() {
         slidesPerView={3}
         breakpoints={{
           640: {
-            slidesPerView: 2,
+            slidesPerView: 4,
             spaceBetween: 20,
           },
           1024: {

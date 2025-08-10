@@ -1,10 +1,16 @@
 import { create } from "zustand";
-import { Product } from "@/data/products";
+import { Product, products } from "@/data/products";
 
 type ProductState = {
+  allProducts: Product[];
+  filteredProducts: Product[];
   currentPage: number;
-  setPage: (page: number) => void;
+  category: string;
+  priceSort: "asc" | "desc" | "";
   itemsPerPage: number;
+  setPage: (page: number) => void;
+  setCategory: (category: string) => void;
+  setPriceSort: (sort: "asc" | "desc" | "") => void;
 };
 
 type CartItem = Product & { qty: number };
@@ -19,11 +25,44 @@ type CartState = {
   checkout: () => void;
 };
 
-export const useProductStore = create<ProductState>((set) => ({
+export const useProductStore = create<ProductState>((set, get) => ({
+  allProducts: products,
+  filteredProducts: products,
+  category: "",
+  priceSort: "",
   currentPage: 1,
   itemsPerPage: 4,
   setPage: (page) => {
     set({ currentPage: page });
+  },
+  setCategory: (category) => {
+    const { allProducts, priceSort } = get();
+    let result = [...allProducts];
+
+    if (category) {
+      result = result.filter((p) => p.kategori === category);
+    }
+    if (priceSort === "asc") {
+      result.sort((a, b) => a.price - b.price);
+    } else if (priceSort === "desc") {
+      result.sort((a, b) => b.price - a.price);
+    }
+
+    set({ category, filteredProducts: result, currentPage: 1 });
+  },
+  setPriceSort: (sort) => {
+    const { allProducts, category } = get();
+    let result = [...allProducts];
+
+    if (category) {
+      result = result.filter((p) => p.kategori === category);
+    }
+    if (sort === "asc") {
+      result.sort((a, b) => a.price - b.price);
+    } else if (sort === "desc") {
+      result.sort((a, b) => b.price - a.price);
+    }
+    set({ priceSort: sort, filteredProducts: result, currentPage: 1 });
   },
 }));
 
