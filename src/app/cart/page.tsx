@@ -41,7 +41,7 @@ export default function CartPage() {
           <div className="container space-y-4">
             {items.map((item) => (
               <div key={item.id} className="flex items-center border-b-2 border-b-teal-600 border-r-teal-600 border-r-2 p-4 rounded-lg shadow-sm">
-                <Image src={item.image} alt={item.nama} width={60} height={60} className="object-cover rounded-mb mb-4" />
+                <Image src={item.image} alt={item.nama} width={60} height={60} className="object-cover rounded-mb mb-4" loading="lazy" />
 
                 <div className="ml-4 flex-1">
                   <h2 className="font-semibold">{item.nama}</h2>
