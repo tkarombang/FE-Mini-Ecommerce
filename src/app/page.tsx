@@ -49,13 +49,17 @@ export default function ProductListPage() {
         spaceBetween={20}
         slidesPerView={3}
         breakpoints={{
-          640: {
-            slidesPerView: 4,
+          375: {
+            slidesPerView: 1,
             spaceBetween: 20,
           },
-          1024: {
-            slidesPerView: 3,
+          912: {
+            slidesPerView: 2,
             spaceBetween: 30,
+          },
+          980: {
+            slidesPerView: 3,
+            spaceBetween: 10,
           },
         }}
       >
