@@ -12,7 +12,7 @@ const ProductCard = React.memo(({ product, onAdd }: Props) => {
   return (
     <div className=" border-teal-600 border rounded-lg- p-4 shadow-lg hover:shadow-lg transition">
       <div className="flex gap-3 sm:flex-col md:flex-row">
-        <Image src={product.image} alt={product.nama} width={200} height={200} className="object-cover rounded-mb mb-4" loading="lazy" />
+        <Image src={product.image} alt={product.nama} width={200} height={200} className="object-cover rounded-mb mb-4" priority />
         <div className="flex flex-col">
           <p className="text-teal-600">{product.deskripsi}</p>
           <p className="text-stone-700">

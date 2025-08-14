@@ -22,7 +22,7 @@ type CartState = {
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
-  checkout: () => void;
+  // checkout: () => void;
 };
 
 export const useProductStore = create<ProductState>((set, get) => ({
@@ -90,15 +90,15 @@ export const useCartStore = create<CartState>((set, get) => ({
   totalItems: 0,
   totalPrice: 0,
 
-  checkout: () => {
-    set((state) => {
-      if (state.items.length === 0) return state;
-      return {
-        orders: [...state.orders, state.items],
-        items: [],
-      };
-    });
-  },
+  // checkout: () => {
+  //   set((state) => {
+  //     if (state.items.length === 0) return state;
+  //     return {
+  //       orders: [...state.orders, state.items],
+  //       items: [],
+  //     };
+  //   });
+  // },
 }));
 
 useCartStore.subscribe((state) => {

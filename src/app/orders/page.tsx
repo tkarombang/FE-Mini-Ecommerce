@@ -1,9 +1,20 @@
 "use client";
 
-import { useCartStore } from "@/store/cartStore";
+import { getOrders } from "@/service/orderService";
+import { Order } from "@/types/order";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function OrderPage() {
-  const orders = useCartStore((state) => state.orders);
+  const [orders, setOrders] = useState<Order[]>([]);
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const fetchOrders = async () => {
+    const data = await getOrders();
+    setOrders(data);
+  };
 
   return (
     <div>
@@ -13,20 +24,21 @@ export default function OrderPage() {
         <p className="text-amber-500 text-center font-bold text-5xl">Belum Melakukan Pemesanan</p>
       ) : (
         orders.map((order, index) => (
-          <div key={index} className="mb-6 border rounded-lg shadow p-4 space-y-2">
+          <div key={order.id} className="mb-6 border rounded-lg shadow p-4 space-y-2">
             <h2 className="font-semibold">Pesanan #{index + 1}</h2>
-            {order.map((item) => (
-              <div key={item.id} className="flex justify-between items-center border-b pb-2">
+            <p className="font-semibold">{new Date(order.created_at).toLocaleString()}</p>
+            {order.items.map((item) => (
+              <div key={item.product_id} className="flex justify-between items-center border-b pb-2">
+                {/* <Image src={item.product.image} alt={item.product.nama} width={60} height={60} className="object-cover rounded-mb mb-4" priority /> */}
                 <div>
-                  <p>{item.nama}</p>
+                  <p>{item.product.nama}</p>
                   <p className="text-sm text-stone-500">
-                    Qty: {item.qty} x Rp {item.price.toLocaleString("id-ID")}
+                    Qty: {item.quantity} x Rp {item.price.toLocaleString("id-ID")}
                   </p>
                 </div>
-                <p className="font-semibold">Rp {(item.qty * item.price).toLocaleString("id-ID")}</p>
               </div>
             ))}
-            <p className="font-bold pt-2 border-t">Total: Rp {order.reduce((acc, curr) => acc + curr.price * curr.qty, 0).toLocaleString("id-ID")}</p>
+            <p className="font-bold pt-2 border-t">Total: Rp{order.total_price.toLocaleString("id-ID")}</p>
           </div>
         ))
       )}

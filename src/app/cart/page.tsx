@@ -1,22 +1,17 @@
 "use client";
 
+import { createOrder } from "@/service/orderService";
 import { useCartStore } from "@/store/cartStore";
+import { CreateOrderDTO, Order } from "@/types/order";
 import Image from "next/image";
 
 export default function CartPage() {
-  // const { items, addToCart, removeFromCart, clearCart } = useCartStore((state) => ({
-  //   items: state.items,
-  //   addToCart: state.addToCart,
-  //   removeFromCart: state.removeFromCart,
-  //   clearCart: state.clearCart,
-  // }));
-
   const items = useCartStore((state) => state.items);
   const clearCart = useCartStore((state) => state.clearCart);
   const addToCart = useCartStore((state) => state.addToCart);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const totalPrice = useCartStore((state) => state.totalPrice);
-  const checkout = useCartStore((state) => state.checkout);
+  // const checkout = useCartStore((state) => state.checkout);
 
   const decreaseQty = (id: number) => {
     const item = items.find((element) => element.id === id);
@@ -27,6 +22,26 @@ export default function CartPage() {
       });
     } else {
       removeFromCart(id);
+    }
+  };
+
+  const handleCheckout = async () => {
+    try {
+      const orderData: CreateOrderDTO = {
+        // customer_name: null,
+        // customer_email: null,
+        items: items.map((item) => ({
+          product_id: item.id,
+          quantity: item.qty,
+          price: item.price,
+        })),
+      };
+      const kirimOrder: Order = await createOrder(orderData);
+      clearCart();
+      alert(`Berhasil Buat Order-ID: ${kirimOrder.id}`);
+    } catch (err) {
+      console.error(err);
+      alert("Gagal Membuat Order");
     }
   };
 
@@ -41,7 +56,7 @@ export default function CartPage() {
           <div className="container space-y-4">
             {items.map((item) => (
               <div key={item.id} className="flex items-center border-b-2 border-b-teal-600 border-r-teal-600 border-r-2 p-4 rounded-lg shadow-sm">
-                <Image src={item.image} alt={item.nama} width={60} height={60} className="object-cover rounded-mb mb-4" loading="lazy" />
+                <Image src={item.image} alt={item.nama} width={60} height={60} className="object-cover rounded-mb mb-4" priority />
 
                 <div className="ml-4 flex-1">
                   <h2 className="font-semibold">{item.nama}</h2>
@@ -70,13 +85,7 @@ export default function CartPage() {
               <button onClick={clearCart} className="ml-4 bg-rose-600 hover:bg-rose-700 py-2 px-4 text-stone-100 cursor-pointer rounded transition">
                 Clear
               </button>
-              <button
-                onClick={() => {
-                  checkout();
-                  alert("Checkout Sukses! Pesanan masuk ke daftar orders");
-                }}
-                className="ml-4 bg-teal-600 hover:bg-teal-800 py-2 px-4 text-stone-100 cursor-pointer rounded transition"
-              >
+              <button onClick={handleCheckout} className="ml-4 bg-teal-600 hover:bg-teal-800 py-2 px-4 text-stone-100 cursor-pointer rounded transition">
                 Checkout
               </button>
             </div>
