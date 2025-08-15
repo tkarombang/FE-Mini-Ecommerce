@@ -16,3 +16,8 @@ export const getOrders = async (): Promise<Order[]> => {
 export const deleteOrder = async (orderId: number): Promise<void> => {
   await axios.delete<Order[]>(`${API_URL}/orders/${orderId}`);
 };
+
+export const getTotalRevenueEndpoint = async (): Promise<number> => {
+  const res = await axios.get<number>(`${API_URL}/analytics/revenue`);
+  return res.data;
+};

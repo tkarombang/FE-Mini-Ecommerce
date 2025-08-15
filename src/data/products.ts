@@ -11,7 +11,7 @@ export type Product = {
 
 export const products: Product[] = [
   {
-    id: 1,
+    id: 4,
     nama: "Laptop ASUS ROG",
     price: 15000000,
     deskripsi: "Laptop gaming dengan performa tinggi",
@@ -21,7 +21,7 @@ export const products: Product[] = [
     image: "/assets/laptop-asus-rog.jpg",
   },
   {
-    id: 2,
+    id: 5,
     nama: "Smartphone Samsung Galaxy",
     price: 8000000,
     deskripsi: "Smartphone dengan kamera terbaik",
@@ -31,7 +31,7 @@ export const products: Product[] = [
     image: "/assets/samsung-galaxy.jpg",
   },
   {
-    id: 3,
+    id: 6,
     nama: "Kamera Canon EOS",
     price: 12000000,
     deskripsi: "Kamera DSLR untuk fotografi profesional",
@@ -41,7 +41,7 @@ export const products: Product[] = [
     image: "/assets/camera-canon.jpg",
   },
   {
-    id: 4,
+    id: 7,
     nama: "RK Tactichal Keyboard",
     price: 12000000,
     deskripsi: "Keyboard mekanikal dengan pencahayaan RGB yang halus dan responsif.",
@@ -51,7 +51,7 @@ export const products: Product[] = [
     image: "/assets/keyboard.jpg",
   },
   {
-    id: 5,
+    id: 8,
     nama: "Headphone Sony WH-1000XM4",
     price: 4500000,
     deskripsi: "Headphone peredam bising terbaik untuk pengalaman audio premium.",
@@ -61,7 +61,7 @@ export const products: Product[] = [
     image: "/assets/headphone-sony.jpg",
   },
   {
-    id: 6,
+    id: 9,
     nama: "Smartwatch Apple Watch",
     price: 7500000,
     deskripsi: "Smartwatch multifungsi dengan fitur kesehatan dan notifikasi.",
@@ -71,7 +71,7 @@ export const products: Product[] = [
     image: "/assets/smartwatch.jpg",
   },
   {
-    id: 7,
+    id: 10,
     nama: "Fitbit Charge",
     price: 2500000,
     deskripsi: "Pelacak kebugaran dengan GPS terintegrasi dan monitor detak jantung.",
@@ -81,7 +81,7 @@ export const products: Product[] = [
     image: "/assets/fitbit.jpg",
   },
   {
-    id: 8,
+    id: 11,
     nama: "Xiaomi Smart Band",
     price: 600000,
     deskripsi: "Smart band dengan layar AMOLED yang cerah dan masa pakai baterai lama.",

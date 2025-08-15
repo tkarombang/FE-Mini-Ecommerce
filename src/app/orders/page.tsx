@@ -1,15 +1,23 @@
 "use client";
 
-import { deleteOrder, getOrders } from "@/service/orderService";
+import { deleteOrder, getOrders, getTotalRevenueEndpoint } from "@/service/orderService";
 import { Order } from "@/types/order";
 import { useEffect, useState } from "react";
 // import Image from "next/image";
 
 export default function OrderPage() {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [totalRevenue, setTotalRevenue] = useState<number | null>(null);
+
+  const fetchTotalRevenue = async () => {
+    const data = await getTotalRevenueEndpoint();
+    setTotalRevenue(data);
+  };
+
   useEffect(() => {
     fetchOrders();
-  }, []);
+    fetchTotalRevenue();
+  }, [setTotalRevenue]);
 
   const fetchOrders = async () => {
     const data = await getOrders();
@@ -19,10 +27,14 @@ export default function OrderPage() {
   const handleDelete = async (orderId: number) => {
     if (window.confirm("Yakin Ingin Menghapusnya..?")) await deleteOrder(orderId);
     fetchOrders();
+    fetchTotalRevenue();
   };
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6 text-teal-800">Daftar Pesanan</h1>
+      <div className="flex flex-row-reverse justify-between">
+        <h1 className="text-2xl font-bold mb-6 text-teal-800">Daftar Pesanan</h1>
+        <h1 className="text-xl font-bold mb-6 text-teal-800">Orders: Rp{totalRevenue?.toLocaleString("id-ID")}</h1>
+      </div>
 
       {orders.length === 0 ? (
         <p className="text-amber-500 text-center font-bold text-5xl">Belum Melakukan Pemesanan</p>
@@ -35,15 +47,13 @@ export default function OrderPage() {
               <div key={item.product_id} className="flex justify-between items-center border-b pb-2">
                 {/* <Image src={item.product.image} alt={item.product.nama} width={60} height={60} className="object-cover rounded-mb mb-4" priority /> */}
                 <p>{item.product.nama}</p>
-                <p className="text-sm text-stone-500">
-                  Qty: {item.quantity} x Rp {item.price.toLocaleString("id-ID")}
-                </p>
+                <p className="text-sm text-stone-500">Jumlah Barang: {item.quantity}</p>
               </div>
             ))}
             <p className="font-bold pt-2 border-t">Total: Rp{order.total_price.toLocaleString("id-ID")}</p>
             <div>
-              <button onClick={() => handleDelete(order.id)} className="bg-red-500 hover:bg-rose-600 text-white px-2 py-1 rounded mt-2 cursor-pointer">
-                Hapus
+              <button onClick={() => handleDelete(order.id)} className="bg-amber-500 hover:bg-amber-600 text-white px-2 py-1 rounded mt-2 cursor-pointer">
+                Batalkan Pesanan
               </button>
             </div>
           </div>
