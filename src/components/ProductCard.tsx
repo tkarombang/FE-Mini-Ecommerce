@@ -1,14 +1,15 @@
 "use client";
-import React from "react";
 import Image from "next/image";
-import { Product } from "@/data/products";
+// import { Product } from "@/data/products";
+import { ProductsApi } from "@/types/products";
+import React from "react";
 
-type Props = {
-  product: Product;
-  onAdd: (product: Product) => void;
+type ProductCardProps = {
+  product: ProductsApi;
+  onAdd: (product: ProductsApi) => void;
 };
 
-const ProductCard = React.memo(({ product, onAdd }: Props) => {
+const ProductCard = React.memo(({ product, onAdd }: ProductCardProps) => {
   return (
     <div className=" border-teal-600 border rounded-lg p-4 shadow-lg hover:shadow-lg transition">
       <div className="flex gap-3 sm:flex-col md:flex-row">

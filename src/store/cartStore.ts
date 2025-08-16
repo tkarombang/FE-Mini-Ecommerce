@@ -1,10 +1,11 @@
 "use client";
 import { create } from "zustand";
-import { Product, products } from "@/data/products";
+// import { Product, products } from "@/data/products";
+import { ProductsApi } from "@/types/products";
 
 type ProductState = {
-  allProducts: Product[];
-  filteredProducts: Product[];
+  allProducts: ProductsApi[];
+  filteredProducts: ProductsApi[];
   currentPage: number;
   category: string;
   priceSort: "asc" | "desc" | "";
@@ -12,13 +13,14 @@ type ProductState = {
   setPage: (page: number) => void;
   setCategory: (category: string) => void;
   setPriceSort: (sort: "asc" | "desc" | "") => void;
+  setAllProductsApi: (products: ProductsApi[]) => void;
 };
 
-type CartItem = Product & { qty: number };
+type CartItem = ProductsApi & { qty: number };
 type CartState = {
   items: CartItem[];
   orders: CartItem[][];
-  addToCart: (product: Product) => void;
+  addToCart: (product: ProductsApi) => void;
   removeFromCart: (id: number) => void;
   clearCart: () => void;
   totalItems: number;
@@ -26,44 +28,49 @@ type CartState = {
   // checkout: () => void;
 };
 
+const applyFilters = (products: ProductsApi[], category: string, priceSort: string) => {
+  let result = [...products];
+  if (category) {
+    result = result.filter((p) => p.kategori === category);
+  }
+  if (priceSort === "asc") {
+    result.sort((a, b) => a.price - b.price);
+  } else if (priceSort === "desc") {
+    result.sort((a, b) => b.price - a.price);
+  }
+
+  return result;
+};
+
 export const useProductStore = create<ProductState>((set, get) => ({
-  allProducts: products,
-  filteredProducts: products,
+  allProducts: [],
+  filteredProducts: [],
   category: "",
   priceSort: "",
   currentPage: 1,
   itemsPerPage: 4,
+  setAllProductsApi: (products) => {
+    const { category, priceSort } = get();
+    const filtered = applyFilters(products, category, priceSort);
+    set({
+      allProducts: products,
+      filteredProducts: filtered,
+      currentPage: 1,
+    });
+  },
   setPage: (page) => {
     set({ currentPage: page });
   },
   setCategory: (category) => {
     const { allProducts, priceSort } = get();
-    let result = [...allProducts];
-
-    if (category) {
-      result = result.filter((p) => p.kategori === category);
-    }
-    if (priceSort === "asc") {
-      result.sort((a, b) => a.price - b.price);
-    } else if (priceSort === "desc") {
-      result.sort((a, b) => b.price - a.price);
-    }
-
-    set({ category, filteredProducts: result, currentPage: 1 });
+    const filtered = applyFilters(allProducts, category, priceSort);
+    set({ category, filteredProducts: filtered, currentPage: 1 });
   },
-  setPriceSort: (sort) => {
+  setPriceSort: (priceSort) => {
     const { allProducts, category } = get();
-    let result = [...allProducts];
+    const filtered = applyFilters(allProducts, category, priceSort);
 
-    if (category) {
-      result = result.filter((p) => p.kategori === category);
-    }
-    if (sort === "asc") {
-      result.sort((a, b) => a.price - b.price);
-    } else if (sort === "desc") {
-      result.sort((a, b) => b.price - a.price);
-    }
-    set({ priceSort: sort, filteredProducts: result, currentPage: 1 });
+    set({ priceSort, filteredProducts: filtered, currentPage: 1 });
   },
 }));
 
@@ -90,16 +97,6 @@ export const useCartStore = create<CartState>((set, get) => ({
   clearCart: () => set({ items: [] }),
   totalItems: 0,
   totalPrice: 0,
-
-  // checkout: () => {
-  //   set((state) => {
-  //     if (state.items.length === 0) return state;
-  //     return {
-  //       orders: [...state.orders, state.items],
-  //       items: [],
-  //     };
-  //   });
-  // },
 }));
 
 useCartStore.subscribe((state) => {

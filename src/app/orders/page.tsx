@@ -1,7 +1,7 @@
 "use client";
 
 import { deleteOrder, getOrders, getTotalRevenueEndpoint } from "@/service/orderService";
-import { Order } from "@/types/order";
+import { Order } from "@/types/orders";
 import { useEffect, useState } from "react";
 // import Image from "next/image";
 

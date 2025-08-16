@@ -2,7 +2,7 @@
 
 import { createOrder } from "@/service/orderService";
 import { useCartStore } from "@/store/cartStore";
-import { CreateOrderDTO, Order } from "@/types/order";
+import { CreateOrderDTO, Order } from "@/types/orders";
 import Image from "next/image";
 
 export default function CartPage() {
@@ -60,7 +60,7 @@ export default function CartPage() {
 
                 <div className="ml-4 flex-1">
                   <h2 className="font-semibold">{item.nama}</h2>
-                  <p className="text-sm text-stone-500">{item.price.toLocaleString("id-ID")}</p>
+                  <p className="text-sm text-stone-500">Rp{item.price.toLocaleString("id-ID")}</p>
                 </div>
 
                 <div className="flex items-center space-x-1 relative">
