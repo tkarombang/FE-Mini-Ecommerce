@@ -30,3 +30,13 @@ export interface CreateOrderDTO {
   customer_email?: string;
   items: OrderItemPayload[];
 }
+
+export interface updatedOrderDTO {
+  customer_name: string;
+  customer_email: string;
+  items: {
+    product_id: number;
+    quantity: number;
+    price: number;
+  }[];
+}

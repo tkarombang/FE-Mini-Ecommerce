@@ -1,8 +1,6 @@
 // import axios from "axios";
 import api from "./api";
-import { Order, CreateOrderDTO } from "@/types/orders";
-
-// const API_URL = "http://localhost:8000";
+import { Order, CreateOrderDTO, updatedOrderDTO } from "@/types/orders";
 
 export const createOrder = async (orderData: CreateOrderDTO): Promise<Order> => {
   const res = await api.post<Order>(`/orders`, orderData);
@@ -14,8 +12,8 @@ export const getOrders = async (): Promise<Order[]> => {
   return res.data;
 };
 
-export const updateOrder = async (orderId: number): Promise<Order> => {
-  const res = await api.get<Order>(`/orders/${orderId}`);
+export const updateOrder = async (orderId: number, updatedOrder: updatedOrderDTO): Promise<Order> => {
+  const res = await api.put<Order>(`/orders/${orderId}`, updatedOrder);
   return res.data;
 };
 
