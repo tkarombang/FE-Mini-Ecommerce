@@ -3,6 +3,7 @@ import Image from "next/image";
 // import { Product } from "@/data/products";
 import { ProductsApi } from "@/types/products";
 import React from "react";
+import { useCartStore } from "@/store/cartStore";
 
 type ProductCardProps = {
   product: ProductsApi;
@@ -10,6 +11,8 @@ type ProductCardProps = {
 };
 
 const ProductCard = React.memo(({ product, onAdd }: ProductCardProps) => {
+  const { items } = useCartStore();
+  const isItemsProductInCart = items.some((item) => item.id === product.id);
   return (
     <div className=" border-teal-600 border rounded-lg p-4 shadow-lg hover:shadow-lg transition">
       <div className="flex gap-3 sm:flex-col md:flex-row">
@@ -30,8 +33,13 @@ const ProductCard = React.memo(({ product, onAdd }: ProductCardProps) => {
       <h3 className="text-lg font-semibold flex justify-between">
         {product.nama} |<strong className="text-amber-400">{product.rating}</strong>
       </h3>
-      <button onClick={() => onAdd(product)} className="mt-4 w-full bg-teal-700 hover:bg-teal-600 text-stone-100 py-2 px-4 rounded transition cursor-pointer">
-        Add to Cart
+      <button
+        disabled={isItemsProductInCart}
+        onClick={() => onAdd(product)}
+        className={`mt-4 w-full text-stone-100 py-2 px-4 rounded transition 
+        ${isItemsProductInCart ? "cursor-not-allowed bg-stone-300" : "cursor-pointer bg-teal-700 hover:bg-teal-600"}`}
+      >
+        {isItemsProductInCart ? "● ● ●" : "Add To Cart"}
       </button>
     </div>
   );

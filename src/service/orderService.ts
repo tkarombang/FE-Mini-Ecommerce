@@ -14,6 +14,11 @@ export const getOrders = async (): Promise<Order[]> => {
   return res.data;
 };
 
+export const updateOrder = async (orderId: number): Promise<Order> => {
+  const res = await api.get<Order>(`/orders/${orderId}`);
+  return res.data;
+};
+
 export const deleteOrder = async (orderId: number): Promise<void> => {
   await api.delete<Order[]>(`/orders/${orderId}`);
 };
