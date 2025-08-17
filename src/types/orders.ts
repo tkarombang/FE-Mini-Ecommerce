@@ -18,15 +18,15 @@ export interface OrderItem {
 
 export interface Order {
   id: number;
-  // customer_name: string | null;
-  // customer_email: string | null;
+  customer_name?: string;
+  customer_email?: string;
   total_price: number;
   created_at: string;
   items: OrderItem[];
 }
 
 export interface CreateOrderDTO {
-  // customer_name?: string | null;
-  // customer_email?: string | null;
+  customer_name?: string;
+  customer_email?: string;
   items: OrderItemPayload[];
 }

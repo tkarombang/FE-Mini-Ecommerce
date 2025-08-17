@@ -1,9 +1,10 @@
 "use client";
 
-import { createOrder } from "@/service/orderService";
+// import { createOrder } from "@/service/orderService";
 import { useCartStore } from "@/store/cartStore";
-import { CreateOrderDTO, Order } from "@/types/orders";
+// import { CreateOrderDTO, Order } from "@/types/orders";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
   const items = useCartStore((state) => state.items);
@@ -11,39 +12,22 @@ export default function CartPage() {
   const addToCart = useCartStore((state) => state.addToCart);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const totalPrice = useCartStore((state) => state.totalPrice);
+  const decreaseQty = useCartStore((state) => state.decreaseQty);
+  const router = useRouter();
+
   // const checkout = useCartStore((state) => state.checkout);
 
-  const decreaseQty = (id: number) => {
-    const item = items.find((element) => element.id === id);
-    if (!item) return;
-    if (item.qty > 1) {
-      useCartStore.setState({
-        items: items.map((el) => (el.id === id ? { ...el, qty: el.qty - 1 } : el)),
-      });
-    } else {
-      removeFromCart(id);
-    }
-  };
-
-  const handleCheckout = async () => {
-    try {
-      const orderData: CreateOrderDTO = {
-        // customer_name: null,
-        // customer_email: null,
-        items: items.map((item) => ({
-          product_id: item.id,
-          quantity: item.qty,
-          price: item.price,
-        })),
-      };
-      const kirimOrder: Order = await createOrder(orderData);
-      clearCart();
-      alert(`Berhasil Buat Order-ID: ${kirimOrder.id}`);
-    } catch (err) {
-      console.error(err);
-      alert("Gagal Membuat Order");
-    }
-  };
+  // const decreaseQty = (id: number) => {
+  //   const item = items.find((element) => element.id === id);
+  //   if (!item) return;
+  //   if (item.qty > 1) {
+  //     useCartStore.setState({
+  //       items: items.map((el) => (el.id === id ? { ...el, qty: el.qty - 1 } : el)),
+  //     });
+  //   } else {
+  //     removeFromCart(id);
+  //   }
+  // };
 
   return (
     <div>
@@ -85,7 +69,10 @@ export default function CartPage() {
               <button onClick={clearCart} className="ml-4 bg-rose-600 hover:bg-rose-700 py-2 px-4 text-stone-100 cursor-pointer rounded transition">
                 Clear
               </button>
-              <button onClick={handleCheckout} className="ml-4 bg-teal-600 hover:bg-teal-800 py-2 px-4 text-stone-100 cursor-pointer rounded transition">
+              {/* <button onClick={handleCheckout} className="ml-4 bg-teal-600 hover:bg-teal-800 py-2 px-4 text-stone-100 cursor-pointer rounded transition">
+                Checkout
+              </button> */}
+              <button onClick={() => router.push("/checkoutForm")} className="ml-4 bg-teal-600 hover:bg-teal-800 py-2 px-4 text-stone-100 cursor-pointer rounded transition">
                 Checkout
               </button>
             </div>

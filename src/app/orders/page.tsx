@@ -43,6 +43,8 @@ export default function OrderPage() {
           <div key={order.id} className="mb-6 border rounded-lg shadow p-4 space-y-2">
             <h2 className="font-semibold">Pesanan #{index + 1}</h2>
             <p className="font-semibold">{new Date(order.created_at).toLocaleString()}</p>
+            <p className="font-semibold">{order.customer_name}</p>
+            <p className="font-semibold">{order.customer_email}</p>
             {order.items.map((item) => (
               <div key={item.product_id} className="flex justify-between items-center border-b pb-2">
                 {/* <Image src={item.product.image} alt={item.product.nama} width={60} height={60} className="object-cover rounded-mb mb-4" priority /> */}
@@ -53,7 +55,7 @@ export default function OrderPage() {
             <p className="font-bold pt-2 border-t">Total: Rp{order.total_price.toLocaleString("id-ID")}</p>
             <div>
               <button onClick={() => handleDelete(order.id)} className="bg-amber-500 hover:bg-amber-600 text-white px-2 py-1 rounded mt-2 cursor-pointer">
-                Batalkan Pesanan
+                Cancel
               </button>
             </div>
           </div>

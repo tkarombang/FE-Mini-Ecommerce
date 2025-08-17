@@ -22,10 +22,11 @@ type CartState = {
   orders: CartItem[][];
   addToCart: (product: ProductsApi) => void;
   removeFromCart: (id: number) => void;
+  decreaseQty: (id: number) => void;
+  // clearCart: (productId: number) => void;
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
-  // checkout: () => void;
 };
 
 const applyFilters = (products: ProductsApi[], category: string, priceSort: string) => {
@@ -94,13 +95,23 @@ export const useCartStore = create<CartState>((set, get) => ({
       items: get().items.filter((item) => item.id !== id),
     });
   },
+  decreaseQty: (productId) => {
+    set((state) => {
+      const updatedCart = state.items.map((item) => (item.id === productId ? { ...item, qty: item.qty - 1 } : item)).filter((item) => item.qty > 0);
+      return {
+        items: updatedCart,
+      };
+    });
+  },
   clearCart: () => set({ items: [] }),
   totalItems: 0,
   totalPrice: 0,
+  // clearCart: () => set({cart: [], totalPrice: 0, totalItems: 0})
 }));
 
 useCartStore.subscribe((state) => {
-  const totalItems = state.items.reduce((acc, curr) => acc + curr.qty, 0);
+  // const totalItems = state.items.reduce((acc, curr) => acc + curr.qty, 0);
+  const totalItems = state.items.length;
   const totalPrice = state.items.reduce((acc, curr) => acc + curr.qty * curr.price, 0);
   setTimeout(() => {
     useCartStore.setState({ totalItems, totalPrice });

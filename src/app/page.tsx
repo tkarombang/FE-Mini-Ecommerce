@@ -53,18 +53,14 @@ export default function ProductListPage() {
 
       <div className="flex flex-wrap gap-4 mb-6 justify-end">
         <select value={category} onChange={(e) => debounceSetCategory(e.target.value)} className="border-teal-600 border rounded px-2 py-2 cursor-pointer">
-          <option value="" disabled>
-            Semua Kategori
-          </option>
+          <option value="">Kategori</option>
           <option value="Elektronik">Elektronik</option>
           <option value="Aksesoris Komputer">Aksesoris Komputer</option>
           <option value="Perangkat Wearable">Perangkat Wearable</option>
         </select>
 
         <select value={priceSort} onChange={(e) => debouncePriceSort(e.target.value as "asc" | "desc" | "")} className="border-teal-600 border rounded px-2 py-2 cursor-pointer">
-          <option value="" disabled>
-            Urutkan Harga
-          </option>
+          <option value="">Harga</option>
           <option value="asc">Harga Terendah</option>
           <option value="desc">Harga Tertinggi</option>
         </select>
