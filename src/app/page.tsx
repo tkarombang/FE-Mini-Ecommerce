@@ -14,11 +14,6 @@ import { readProducts } from "@/service/productService";
 export default function ProductListPage() {
   const { filteredProducts, category, priceSort, currentPage, itemsPerPage, setPage, setCategory, setPriceSort, setAllProductsApi } = useProductStore();
 
-  // const { products } = useProductStore((state) => ({
-  //   products: state.filteredProducts,
-  // }));
-
-  // mengambil_data_produk_dari_API
   const fetchProductsApi = useCallback(async () => {
     try {
       const productFromApi = await readProducts();

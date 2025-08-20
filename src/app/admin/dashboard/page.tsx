@@ -336,8 +336,9 @@ export default function DashboardPage() {
                   <th className="py-3 px-6 text-left text-sm font-semibold text-gray-600">ID Pesanan</th>
                   <th className="py-3 px-6 text-left text-sm font-semibold text-gray-600">Nama Pelanggan</th>
                   <th className="py-3 px-6 text-left text-sm font-semibold text-gray-600">Tanggal</th>
-                  <th className="py-3 px-6 text-left text-sm font-semibold text-gray-600">Total</th>
                   <th className="py-3 px-6 text-left text-sm font-semibold text-gray-600">Email</th>
+                  <th className="py-3 px-6 text-left text-sm font-semibold text-gray-600">Produk</th>
+                  <th className="py-3 px-6 text-left text-sm font-semibold text-gray-600">Total</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -353,8 +354,18 @@ export default function DashboardPage() {
                           day: "numeric",
                         })}
                       </td>
-                      <td className="py-4 px-6 text-sm text-gray-800">Rp{order.total_price.toLocaleString("id-ID")}</td>
                       <td className="py-4 px-6 text-sm text-gray-800">{order.customer_email}</td>
+
+                      <td className="py-4 px-6 text-sm text-gray-800">
+                        <ol className="flex flex-col">
+                          {order.items.map((nprd, index) => (
+                            <li key={index} className="text-gray-800">
+                              {nprd.product.nama}
+                            </li>
+                          ))}
+                        </ol>
+                      </td>
+                      <td className="py-4 px-6 text-sm text-gray-800">Rp{order.total_price.toLocaleString("id-ID")}</td>
                     </tr>
                   ))
                 ) : (
