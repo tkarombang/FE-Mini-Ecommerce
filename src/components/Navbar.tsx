@@ -21,6 +21,9 @@ export default function Navbar() {
           <Link href="/" className="sm:text-sm sm:font-light text-stone-50 hover:text-stone-400">
             Products
           </Link>
+          <Link href="/admin/dashboard" className="sm:text-sm sm:font-light text-stone-50 hover:text-stone-400">
+            Dashboard
+          </Link>
           <Link href="/orders" className="sm:text-sm sm:font-light text-stone-50 hover:text-stone-400">
             List Order
           </Link>

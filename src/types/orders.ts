@@ -9,8 +9,9 @@ export interface OrderItem {
   product: {
     id: number;
     nama: string;
-    image: string;
     price: number;
+    kategori: string;
+    image: string;
   };
   quantity: number;
   price: number;
