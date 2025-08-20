@@ -5,6 +5,7 @@ export interface OrderItemPayload {
 }
 
 export interface OrderItem {
+  id: number;
   product_id: number;
   product: {
     id: number;
