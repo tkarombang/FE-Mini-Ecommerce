@@ -16,7 +16,7 @@ type ProductState = {
   setAllProductsApi: (products: ProductsApi[]) => void;
 };
 
-type CartItem = ProductsApi & { qty: number };
+export type CartItem = ProductsApi & { qty: number };
 type CartState = {
   items: CartItem[];
   orders: CartItem[][];

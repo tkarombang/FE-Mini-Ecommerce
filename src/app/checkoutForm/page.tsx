@@ -8,9 +8,9 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 
 export default function CheckoutFormPage() {
-  const [customerName, setCustomerName] = useState("");
-  const [customerEmail, setCustomerEmail] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [customerName, setCustomerName] = useState<string>("");
+  const [customerEmail, setCustomerEmail] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const { items, totalPrice, clearCart } = useCartStore();
   const router = useRouter();
 
@@ -42,7 +42,7 @@ export default function CheckoutFormPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-stone-200 rounded shadodw">
+    <div className="max-w-md mx-auto p-6 bg-stone-200 rounded shadow-lg">
       <h1 className="text-2xl font-bold mb-4 text-teal-700">Input Customers</h1>
 
       <form onSubmit={handleCheckout} className="space-y-4">

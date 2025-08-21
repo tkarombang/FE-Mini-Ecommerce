@@ -2,7 +2,7 @@
 import Image from "next/image";
 // import { Product } from "@/data/products";
 import { ProductsApi } from "@/types/products";
-import React from "react";
+import React, { useMemo } from "react";
 import { useCartStore } from "@/store/cartStore";
 
 type ProductCardProps = {
@@ -12,7 +12,7 @@ type ProductCardProps = {
 
 const ProductCard = React.memo(({ product, onAdd }: ProductCardProps) => {
   const { items } = useCartStore();
-  const isItemsProductInCart = items.some((item) => item.id === product.id);
+  const isItemsProductInCart = useMemo(() => items.some((item) => item.id === product.id), [items, product.id]);
   return (
     <div className=" border-teal-600 border rounded-lg p-4 shadow-lg hover:shadow-lg transition">
       <div className="flex gap-3 sm:flex-col md:flex-row">

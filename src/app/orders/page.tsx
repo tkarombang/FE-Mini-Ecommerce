@@ -1,5 +1,6 @@
 "use client";
 
+import DeleteModal from "@/components/modals/OrdereDelete";
 import { deleteOrder, getOrders, getTotalRevenueEndpoint, updateOrder } from "@/service/orderService";
 import { Order } from "@/types/orders";
 import { useEffect, useState } from "react";
@@ -12,23 +13,22 @@ export default function OrderPage() {
   const [formData, setFormData] = useState<Partial<Order> | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState<number | null>(null);
 
-  const fetchTotalRevenue = async () => {
-    const data = await getTotalRevenueEndpoint();
-    setTotalRevenue(data);
-  };
-
   useEffect(() => {
     fetchOrders();
     fetchTotalRevenue();
   }, []);
 
   const fetchOrders = async () => {
-    const data = await getOrders();
+    const data: Order[] = await getOrders();
     setOrders(data);
   };
 
+  const fetchTotalRevenue = async (): Promise<void> => {
+    const data: number = await getTotalRevenueEndpoint();
+    setTotalRevenue(data);
+  };
+
   const handleDelete = async () => {
-    // if (window.confirm("Yakin Ingin Menghapusnya..?")) await deleteOrder(orderId);
     try {
       if (showDeleteModal !== null) {
         await deleteOrder(showDeleteModal);
@@ -36,8 +36,12 @@ export default function OrderPage() {
         fetchOrders();
         fetchTotalRevenue();
       }
-    } catch (err) {
-      console.error("Kamu Gagal Menghapus Order", err);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error("Kamu Gagal Menghapus Order", err.message);
+      } else {
+        console.error("Kamu Gagal Menghapus Order", err);
+      }
       return null;
     }
   };
@@ -68,7 +72,7 @@ export default function OrderPage() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, itemId?: number) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, itemId?: number): void => {
     const { name, value } = e.target;
     if (itemId !== undefined) {
       setFormData((prev) => {
@@ -79,6 +83,10 @@ export default function OrderPage() {
     } else {
       setFormData((prev) => (prev ? { ...prev, [name]: value } : null));
     }
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteModal(null);
   };
   return (
     <div>
@@ -153,22 +161,7 @@ export default function OrderPage() {
         ))
       )}
 
-      {showDeleteModal !== null && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl shadow-2xl p-6 sm:p-8 max-w-md w-full text-center space-y-6">
-            <h3 className="text-2xl font-bold text-red-600">Confirm Delete ● ● ●</h3>
-            <p className="text-gray-700">Apakah Anda yakin ingin menghapus pesanan ini?</p>
-            <div className="flex gap-4 justify-center mt-6">
-              <button onClick={handleDelete} className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-colors">
-                Ya, Hapus
-              </button>
-              <button onClick={() => setShowDeleteModal(null)} className="bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-colors">
-                Batal
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {showDeleteModal !== null && <DeleteModal orderId={showDeleteModal} onDelete={handleDelete} onCancel={handleCancelDelete} />}
     </div>
   );
 }

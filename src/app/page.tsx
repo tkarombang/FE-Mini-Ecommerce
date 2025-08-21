@@ -19,7 +19,11 @@ export default function ProductListPage() {
       const productFromApi = await readProducts();
       setAllProductsApi(productFromApi);
     } catch (err) {
-      console.error("Gagal Mengambil Data Produk", err);
+      if (err instanceof Error) {
+        console.error("Gagal Mengambil Data Produk", err.message);
+      } else {
+        console.error("Gagal Mengambil Data Produk", err);
+      }
     }
   }, [setAllProductsApi]);
 
@@ -47,14 +51,14 @@ export default function ProductListPage() {
       <h1 className="text-3xl font-bold text-teal-800">Daftar Produk</h1>
 
       <div className="flex flex-wrap gap-4 mb-6 justify-end">
-        <select value={category} onChange={(e) => debounceSetCategory(e.target.value)} className="border-teal-600 border rounded px-2 py-2 cursor-pointer">
+        <select value={category} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => debounceSetCategory(e.target.value)} className="border-teal-600 border rounded px-2 py-2 cursor-pointer">
           <option value="">Kategori</option>
           <option value="Elektronik">Elektronik</option>
           <option value="Aksesoris Komputer">Aksesoris Komputer</option>
           <option value="Perangkat Wearable">Perangkat Wearable</option>
         </select>
 
-        <select value={priceSort} onChange={(e) => debouncePriceSort(e.target.value as "asc" | "desc" | "")} className="border-teal-600 border rounded px-2 py-2 cursor-pointer">
+        <select value={priceSort} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => debouncePriceSort(e.target.value as "asc" | "desc" | "")} className="border-teal-600 border rounded px-2 py-2 cursor-pointer">
           <option value="">Harga</option>
           <option value="asc">Harga Terendah</option>
           <option value="desc">Harga Tertinggi</option>
@@ -87,7 +91,7 @@ export default function ProductListPage() {
       </Swiper>
 
       <div className="flex justify-center mt-6 gap-2">
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page: number) => (
           <button key={page} onClick={() => setPage(page)} className={`cursor-pointer px-3 py-1 rounded ${page === currentPage ? "bg-teal-700 text-stone-100" : "bg-stone-200"}`}></button>
         ))}
       </div>

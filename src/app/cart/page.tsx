@@ -5,29 +5,16 @@ import { useCartStore } from "@/store/cartStore";
 // import { CreateOrderDTO, Order } from "@/types/orders";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import type { CartItem } from "@/store/cartStore";
 
 export default function CartPage() {
-  const items = useCartStore((state) => state.items);
+  const items = useCartStore((state) => state.items) as CartItem[];
   const clearCart = useCartStore((state) => state.clearCart);
   const addToCart = useCartStore((state) => state.addToCart);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const totalPrice = useCartStore((state) => state.totalPrice);
   const decreaseQty = useCartStore((state) => state.decreaseQty);
   const router = useRouter();
-
-  // const checkout = useCartStore((state) => state.checkout);
-
-  // const decreaseQty = (id: number) => {
-  //   const item = items.find((element) => element.id === id);
-  //   if (!item) return;
-  //   if (item.qty > 1) {
-  //     useCartStore.setState({
-  //       items: items.map((el) => (el.id === id ? { ...el, qty: el.qty - 1 } : el)),
-  //     });
-  //   } else {
-  //     removeFromCart(id);
-  //   }
-  // };
 
   return (
     <div>
@@ -69,9 +56,6 @@ export default function CartPage() {
               <button onClick={clearCart} className="ml-4 bg-rose-600 hover:bg-rose-700 py-2 px-4 text-stone-100 cursor-pointer rounded transition">
                 Clear
               </button>
-              {/* <button onClick={handleCheckout} className="ml-4 bg-teal-600 hover:bg-teal-800 py-2 px-4 text-stone-100 cursor-pointer rounded transition">
-                Checkout
-              </button> */}
               <button onClick={() => router.push("/checkoutForm")} className="ml-4 bg-teal-600 hover:bg-teal-800 py-2 px-4 text-stone-100 cursor-pointer rounded transition">
                 Checkout
               </button>
